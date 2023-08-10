@@ -97,8 +97,10 @@ results_new = []
 for i in range(ref.shape[0]):
     if i == 0:
         results_new.append(pyklip.rotate(results[i], angles[i], coords[i], astr_hdr=header))
+        #results_new.append(pyklip.rotate(results[i], angles[i], coords[i], new_center=(550,550), astr_hdr=header))
     else:
         results_new.append(pyklip.rotate(results[i], angles[i], coords[i]))
+        #results_new.append(pyklip.rotate(results[i], angles[i], coords[i], new_center=(550,550)))
 
 
 hdr = header.to_header()
