@@ -309,20 +309,29 @@ def SolveNMF(self_maxiters, self_W, self_H, self_tol, self_X, self_V, self_V_siz
 
         niter, oldchi2, chi2, self_W, self_H = carry
 
+        def true1(self_H):
         #if (not W_only):
-            #Had to comment out this coniditional since it doesn't work with JAX JIT well. Doesn't seem like this would ever be false anyways
-        H_up = dot(XVT, self_W)
-        WHVT = multiply(VT, jnp.transpose(jnp.dot(self_W, self_H)))
-        H_down = dot(WHVT, self_W)
-        self_H = self_H*jnp.transpose(H_up)/jnp.transpose(H_down)
+            H_up = jnp.dot(XVT, self_W)
+            WHVT = jnp.multiply(VT, jnp.transpose(jnp.dot(self_W, self_H)))
+            H_down = jnp.dot(WHVT, self_W)
+            self_H = self_H*jnp.transpose(H_up)/jnp.transpose(H_down)
+            return self_H
+        def false1(self_H):
+            return self_H
 
         # Update W
         #if (not H_only):
-            #Same as last conditional
-        W_up = dot(XV, jnp.transpose(self_H))
-        WHV = multiply(V, jnp.dot(self_W, self_H))
-        W_down = dot(WHV, jnp.transpose(self_H))
-        self_W = self_W*W_up/W_down
+        def true2(self_W):
+            W_up = jnp.dot(XV, jnp.transpose(self_H))
+            WHV = jnp.multiply(V, jnp.dot(self_W, self_H))
+            W_down = jnp.dot(WHV, jnp.transpose(self_H))
+            self_W = self_W*W_up/W_down
+            return self_W
+        def false2(self_W):
+            return self_W
+        
+        self_H = lax.cond(jnp.logical_not(W_only), true1, false1, self_H)
+        self_W = lax.cond(jnp.logical_not(H_only), true2, false2, self_W)
 
         # chi2
         oldchi2 = chi2
