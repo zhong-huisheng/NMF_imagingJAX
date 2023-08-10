@@ -82,18 +82,21 @@ maxiters = 1e5
 
 t0 = time.time()
 for i in range(trg.shape[0]):
+      #can replace component, model, and result lines with commented lines below it to process whole image instead of doing data imputation
     ref_new = copy.deepcopy(ref)
     ref_new = np.delete(ref_new, i, 0)
     print(ref_new.shape)
     components = nmf_imaging.NMFcomponents(ref_new, ref_err=b, mask = masks_fom[i], n_components = componentNum, oneByOne=True, maxiters=maxiters)
+    #components = nmf_imaging.NMFcomponents(ref_new, ref_err=b, mask = mask, n_components = componentNum, oneByOne=True, maxiters=maxiters)
+  
     trgs = trg[i]
     print(i)
     trg_err = trg_errs[i]
     model = nmf_imaging.NMFmodelling(trg = trgs, trg_err=trg_err, components = components, n_components = componentNum, mask_components=mask, trgThresh=0.0, maxiters=maxiters, mask_data_imputation=masks_fom[i]) # Model the target with the constructed components.
-    #best_frac =  nmf_imaging.NMFbff(trgs, model, mask) # Perform BFF procedure to find out the best fraction to model the target.
-    best_frac = 1.0
-    #result = trg - model
+    #model = nmf_imaging.NMFmodelling(trg = trgs, trg_err=trg_err, components = components, n_components = componentNum, mask_components=mask, trgThresh=0.0, maxiters=maxiters)
+    best_frac = 1.
     result = nmf_imaging.NMFsubtraction(trgs, model, masks_fom[i], frac = best_frac) # Subtract the best model from the target
+    #result = nmf_imaging.NMFsubtraction(trgs, model, mask, frac = best_frac)
     results[i] = result
     # Now `results' stores the NMF subtraction results of the targets.
 
