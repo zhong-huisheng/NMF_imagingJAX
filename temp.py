@@ -34,8 +34,8 @@ cond, counter2, counter = True, 0, 0
 trg_bool = True
 directory = os.fsencode("###") #input path to directory with ref
 
-ra1, dec1 = (344.4110073, -29.6186750)
-ra2, dec2 = (344.4118405, -29.6206386)
+#ra1, dec1 = (344.4110073, -29.6186750) #2012
+#ra2, dec2 = (344.4118405, -29.6206386)
 
 #ra1, dec1 = (344.4090073, -29.6186750) #2010
 #ra2, dec2 = (344.4118405, -29.6206386)
@@ -138,8 +138,8 @@ mask[mask == 0] = 1e-6
 mask_disk[mask_disk == 0] = 1e-6
 mask[np.isnan(mask)] = 1e-6
 masks_fom[np.isnan(masks_fom)] = 1e-6
-mask_new[np.isnan(mask_new)] = 1e-6
-mask_new[mask_new == 0] = 1e-6
+#mask_new[np.isnan(mask_new)] = 1e-6
+#mask_new[mask_new == 0] = 1e-6
 
 
 componentNum = 11 #desired number of components. Has to be greater than 2 but less than reference number
