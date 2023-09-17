@@ -114,15 +114,14 @@ trg_errs = np.ones(ref.shape)
 
 results = np.zeros((ref.shape[0], ref.shape[1], ref.shape[2])) # Say trgs is a 3D array containing the targets that need NMF modeling, then results store the NMF subtraction results.
 result2 = np.zeros((ref.shape[0], ref.shape[1], ref.shape[2]))
-maxiters = 1e5
+maxiters = 1e5  #maxiters used for nmf i.e. max nmber of iterations
 
 
-#block of code re-centers masks. Loop re-centers masks of the planet used for data imputation
-"""
+#block of code re-centers masks and references. Loop re-centers masks of the planet used for data imputation
 for i in range(ref.shape[0]):
     ref[i] = pyklip.rotate(ref[i], 0, coords[i], new_center=(550,550), astr_hdr=header)
-    masks_fom[i] = pyklip.rotate(masks_fom[i], 0, coords[i], new_center=(550,550), astr_hdr=header)
-"""
+    #masks_fom[i] = pyklip.rotate(masks_fom[i], 0, coords[i], new_center=(550,550), astr_hdr=header)
+
 mask = pyklip.rotate(mask, 0, coords[0], new_center=(550,550), astr_hdr=header)
 
 
