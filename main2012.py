@@ -31,14 +31,7 @@ mask_disk = np.ones((12,1100,1100))
 masks_fom = np.ones((12,1100,1100))
 cond, counter2, counter = True, 0, 0
 
-trg_bool = True
 directory = os.fsencode("###") #input path to directory with ref
-
-#ra1, dec1 = (344.4110073, -29.6186750) #2012
-#ra2, dec2 = (344.4118405, -29.6206386)
-
-#ra1, dec1 = (344.4090073, -29.6186750) #2010
-#ra2, dec2 = (344.4118405, -29.6206386)
 
 
 for x in sorted(os.listdir(directory)):
@@ -47,27 +40,6 @@ for x in sorted(os.listdir(directory)):
         header = WCS(temp_file[0].header)
         cond = False
     if counter2 == 0:
-        #Block of code below modifies mask_fom to make a data imputation mask for exoplanet
-        #the RAs and DECs of where the planet is needs to be defined
-        """
-        head.append(temp_file[0].header)
-        w = WCS(temp_file[0].header)
-        x1, y1 = w.all_world2pix(ra1, dec1, 1)
-        x2, y2 = w.all_world2pix(ra2, dec2, 1)
-        if x1 < x2:
-            topx = int(x2)
-            botx = int(x1)
-        else:
-            topx = int(x1)
-            botx = int(x2)
-        if y1 < y2:
-            topy = int(y2)
-            boty = int(y1)
-        else:
-            topy = int(y1)
-            boty = int(y2)
-        masks_fom[counter][boty:topy,botx:topx] = 0.
-        """
         angles.append(temp_file[0].header['ORIENTAT'])
     
     a.append(temp_file[0].data)
@@ -113,7 +85,6 @@ trg_errs = np.ones(ref.shape)
 
 
 results = np.zeros((ref.shape[0], ref.shape[1], ref.shape[2])) # Say trgs is a 3D array containing the targets that need NMF modeling, then results store the NMF subtraction results.
-result2 = np.zeros((ref.shape[0], ref.shape[1], ref.shape[2]))
 maxiters = 1e5  #maxiters used for nmf i.e. max nmber of iterations
 
 
