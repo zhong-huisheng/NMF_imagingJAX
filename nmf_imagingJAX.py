@@ -240,7 +240,8 @@ def NMFcomponents(ref, ref_err = None, mask = None, n_components = None, maxiter
                         g_img = nmf.NMF(ref_columnized, V = 1.0/ref_err_columnized**2, W = W_ini, H = H_ini, M = mask_columnized, n_components= n)
                     #chi2 = g_img.SolveNMF(maxiters=maxiters)
                     chi2,time_used, g_img.H, g_img.W = nmf.SolveNMF(g_img.maxiters, g_img.W, g_img.H, g_img.tol, g_img.X, g_img.V, g_img.V_size, maxiters=maxiters)
-                    components_column = g_img.W/np.sqrt(np.nansum(g_img.W**2, axis = 0)) #normalize the components
+                    
+                components_column = np.copy(g_img.W)#/np.sqrt(np.nansum(g_img.W**2, axis = 0)) #normalize the components
             else:
                 print('\t path_save provided, you might want to load data and continue previous component calculation')
                 print('\t\t loading from ' + path_save + '_comp.fits for components.')
